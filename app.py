@@ -3,56 +3,25 @@ from datetime import datetime
 import random
 
 # 페이지 설정
-st.set_page_config(
-    page_title="2025년 연하장 생성기",
-    page_icon="🎊",
-    layout="centered"
-)
+st.set_page_config(page_title="연하장 생성기", layout="centered")
 
-# CSS 스타일 적용
-st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
-    
-    * {
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-    
-    .handwriting {
-        font-family: 'Nanum Pen Script', cursive !important;
-        font-size: 24px !important;
-        line-height: 1.6 !important;
-    }
-    
-    .title {
-        text-align: center !important;
-        color: #1E4174 !important;
-        font-size: 32px !important;
-        margin-bottom: 2rem !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# 정중한 인사말 목록
+# 인사말 리스트
 formal_greetings = [
-    "새해를 맞이하여 귀하와 귀하의 가정에 건강과 행복이 가득하시기를 기원합니다.",
-    "2025년 청룡의 해를 맞이하여 소망하시는 모든 일들이 이루어지시길 바랍니다.",
-    "새해에도 변함없는 건강과 행운이 함���하시길 진심으로 기원드립니다.",
-    "희망찬 2025년, 귀하의 가정에 평안과 축복이 가득하시길 기원합니다."
+    "새해에도 변함없는 건강과 행운이 함께하시길 진심으로 기원드립니다.",
+    "희망찬 새해, 늘 건강과 행복이 가득하시길 기원드립니다.",
+    "새해에도 좋은 일만 가득하시고 복 많이 받으시길 바랍니다."
 ]
 
-# 캐주얼한 인사말 목록
 casual_greetings = [
-    "2025년에도 우리 같이 행복하게 지내요! 새해 복 많이 받으세요~ 😊",
-    "새해에는 좋은 일만 가득하길! 올해도 잘 부탁해요~ 🎊",
-    "해피 뉴이어! 2025년에도 우리 우정 변치 말아요~ ⭐",
-    "새해에는 하시는 모든 일이 대박나시길! 화이팅! 🎉"
+    "새해에도 변함없는 건강과 행운이 함께하길 바라!",
+    "올해도 우리 같이 힘내보자! 새해 복 많이 받아~",
+    "새해에는 좋은 일만 가득하길! 항상 응원할게!"
 ]
 
-# 배경 이미지 CSS 추가
+# CSS 스타일
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Gaegu&family=Poor+Story&family=Single+Day&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Gaegu&family=Hi+Melody&family=Dongle&family=Gamja+Flower&family=East+Sea+Dokdo&display=swap');
     
     .letter-container {
         background-image: url('https://img.freepik.com/free-photo/crumpled-paper-background_1373-431.jpg');
@@ -62,31 +31,25 @@ st.markdown("""
         margin: 20px 0;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    
-    .handwriting {
-        font-family: var(--font-family) !important;
-        font-size: 24px !important;
-        line-height: 1.8 !important;
-        color: #333 !important;
-    }
-    
-    .title {
-        text-align: center !important;
-        color: #1E4174 !important;
-        font-size: 32px !important;
-        margin-bottom: 2rem !important;
-    }
     </style>
 """, unsafe_allow_html=True)
 
+# 제목
+st.title("🎊 2024 연하장 생성기 🎊")
+
+# 입력 필드
+name = st.text_input("받는 분의 이름을 입력하세요")
+style = st.selectbox("어떤 스타일로 작성할까요?", ["정중하게", "친근하게"])
+
 # 폰트 리스트
-fonts = ['Nanum Pen Script', 'Gaegu', 'Poor Story', 'Single Day']
-
-st.markdown("<h1 class='title'>✨ 2025년 연하장 생성기 ✨</h1>", unsafe_allow_html=True)
-
-# 입력 폼
-name = st.text_input("받는 분의 이름을 입력해주세요")
-style = st.radio("연하장 스타일을 선택해주세요", ["정중하게", "캐주얼하게"])
+fonts = [
+    'Nanum Pen Script',
+    'Gaegu',
+    'Hi Melody',
+    'Dongle',
+    'Gamja Flower',
+    'East Sea Dokdo'
+]
 
 if st.button("연하장 생성하기"):
     if name:
@@ -101,17 +64,42 @@ if st.button("연하장 생성하기"):
         # 스타일에 따른 인사말 선택
         greeting = random.choice(formal_greetings) if style == "정중하게" else random.choice(casual_greetings)
         
-        # 연하장 내용 생성 (편지지 배경 포함)
+        # 동적 스타일 생성
+        dynamic_style = f"""
+        <style>
+        .handwriting-{random_font.lower().replace(' ', '-')} {{
+            font-family: '{random_font}', cursive !important;
+            font-size: 28px !important;
+            line-height: 1.8 !important;
+            color: #1a1a1a !important;
+        }}
+        .name {{
+            font-size: 32px !important;
+            margin-bottom: 20px !important;
+        }}
+        .date {{
+            font-size: 24px !important;
+            margin-top: 30px !important;
+            text-align: right !important;
+        }}
+        </style>
+        """
+        
+        # 연하장 내용 생성
         message = f"""
+        {dynamic_style}
         <div class="letter-container">
-            <div class="handwriting" style="font-family: {random_font} !important;">
-                {name}님께,<br><br>
-                {greeting}<br><br>
-                {current_date}
+            <div class="handwriting-{random_font.lower().replace(' ', '-')}">
+                <div class="name">{name}님께,</div>
+                {greeting}
+                <div class="date">{current_date}</div>
             </div>
         </div>
         """
         
         st.markdown(message, unsafe_allow_html=True)
+        
+        # 디버깅용 (선택된 폰트 확인)
+        st.write(f"선택된 폰트: {random_font}")
     else:
         st.error("이름을 입력해주세요!")
