@@ -1,6 +1,6 @@
 import streamlit as st
-import random
 from datetime import datetime
+import random
 
 # 페이지 설정
 st.set_page_config(
@@ -49,6 +49,39 @@ casual_greetings = [
     "새해에는 하시는 모든 일이 대박나시길! 화이팅! 🎉"
 ]
 
+# 배경 이미지 CSS 추가
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Gaegu&family=Poor+Story&family=Single+Day&display=swap');
+    
+    .letter-container {
+        background-image: url('https://img.freepik.com/free-photo/crumpled-paper-background_1373-431.jpg');
+        background-size: cover;
+        padding: 40px;
+        border-radius: 15px;
+        margin: 20px 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .handwriting {
+        font-family: var(--font-family) !important;
+        font-size: 24px !important;
+        line-height: 1.8 !important;
+        color: #333 !important;
+    }
+    
+    .title {
+        text-align: center !important;
+        color: #1E4174 !important;
+        font-size: 32px !important;
+        margin-bottom: 2rem !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# 폰트 리스트
+fonts = ['Nanum Pen Script', 'Gaegu', 'Poor Story', 'Single Day']
+
 st.markdown("<h1 class='title'>✨ 2025년 연하장 생성기 ✨</h1>", unsafe_allow_html=True)
 
 # 입력 폼
@@ -58,7 +91,9 @@ style = st.radio("연하장 스타일을 선택해주세요", ["정중하게", "
 if st.button("연하장 생성하기"):
     if name:
         st.markdown("---")
-        st.markdown("<div class='handwriting'>", unsafe_allow_html=True)
+        
+        # 랜덤 폰트 선택
+        random_font = random.choice(fonts)
         
         # 현재 날짜
         current_date = datetime.now().strftime("%Y년 %m월 %d일")
@@ -66,16 +101,17 @@ if st.button("연하장 생성하기"):
         # 스타일에 따른 인사말 선택
         greeting = random.choice(formal_greetings) if style == "정중하게" else random.choice(casual_greetings)
         
-        # 연하장 내용 생성
+        # 연하장 내용 생성 (편지지 배경 포함)
         message = f"""
-        {name}님께,
-
-        {greeting}
-
-        {current_date}
+        <div class="letter-container">
+            <div class="handwriting" style="font-family: {random_font} !important;">
+                {name}님께,<br><br>
+                {greeting}<br><br>
+                {current_date}
+            </div>
+        </div>
         """
         
-        st.markdown(f"<div class='handwriting'>{message}</div>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown(message, unsafe_allow_html=True)
     else:
-        st.warning("이름을 입력해주세요!") 
+        st.error("이름을 입력해주세요!")
