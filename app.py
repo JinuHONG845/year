@@ -1,8 +1,14 @@
 import streamlit as st
 from datetime import datetime
 import random
-import openai
-from typing import Optional
+
+# OpenAI 임포트 시도
+try:
+    import openai
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+    st.warning("OpenAI 패키지가 설치되지 않았습니다. AI 기능이 비활성화됩니다.")
 
 # 페이지 설정
 st.set_page_config(
@@ -50,7 +56,9 @@ fonts = [
 ]
 
 def generate_ai_greeting(name: str, style: str, relationship: Optional[str] = None) -> str:
-    """AI를 사용하여 새해 인사 메시지를 생성합니다."""
+    if not OPENAI_AVAILABLE:
+        return random.choice(formal_greetings if style == "정중하게" else casual_greetings)
+    
     try:
         if not openai.api_key:
             raise ValueError("API 키가 설정되지 않았습니다.")
@@ -77,7 +85,6 @@ def generate_ai_greeting(name: str, style: str, relationship: Optional[str] = No
         
         return response.choices[0].message.content.strip()
     except Exception as e:
-        st.warning(f"AI 메시지 생성 중 오류가 발생했습니다. 기본 메시지를 사용합니다.")
         return random.choice(formal_greetings if style == "정중하게" else casual_greetings)
 
 # CSS 스타일
